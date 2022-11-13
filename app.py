@@ -5,7 +5,7 @@ app=Flask(__name__)
 
 @app.route('/',methods=['GET','POST'])
 def index():
-    return 'Manas Jaiswal'
+    return 'CI/CD structure done'
 
 
 if __name__=='__main__':
