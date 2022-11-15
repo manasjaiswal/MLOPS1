@@ -2,8 +2,8 @@ from setuptools import setup,find_packages
 from typing import List
 
 #Declaring variables for setup functions
-PROJECT_NAME="MLops(BigSales)"
-VERSION="0.0.1"
+PROJECT_NAME="MLops-BigSales"
+VERSION="0.0.3"
 AUTHOR="Manas Jaiswal"
 DESCRIPTION="Practicing Mlops Project"
 REQUIREMENT_FILE_NAME="requirements.txt"
