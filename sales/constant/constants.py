@@ -72,3 +72,29 @@ SCHEMA_CONFIG_CATEGORICAL_COLUMNS_KEY="categorical_columns"
 SCHEMA_CONFIG_CATEGORIES_KEY="categories"
 SCHEMA_CONFIG_NUMERICAL_COLUMNS_KEY="numerical_columns"
 SCHEMA_CONFIG_TARGET_COLUMN_KEY="target_column"
+
+
+
+#Data transformation Component Related Constants
+COLUMN_ITEM_VISIBILITY="Item_Visibility"
+COLUMN_ITEM_WEIGHT="Item_Weight"
+COLUMN_ITEM_TYPE="Item_Type"
+COLUMN_OUTLET_SIZE="Outlet_Size"
+COLUMN_ITEM_OUTLET_SALES="Item_Outlet_Sales"
+COLUMN_OUTLET_ESTABLISHMENT_YEAR="Outlet_Establishment_Year"
+COLUMN_ITEM_IDENTIFIER="Item_Identifier"
+COLUMN_FAT_CONTENT="Item_Fat_Content"
+COLUMN_OUTLET_LOCATION_TYPE="Outlet_Location_Type"
+COLUMN_OUTLET_IDENTIFIER_KEY="Outlet_Identifier"
+COLUMN_ITEM_MRP="Item_MRP"
+
+
+#ModelTraining related constants
+GRID_SEARCH_KEY="grid_search"
+MODULE_KEY="module"
+CLASS_KEY="class"
+PARAM_KEY="params"
+MODEL_SELECTION_KEY="model_selection"
+SEARCH_PARA_GRID_KEY="search_param_grid"
+
+TOLERANCE_LIMIT=0.08

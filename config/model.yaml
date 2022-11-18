@@ -1,0 +1,27 @@
+grid_search:
+  class: GridSearchCV
+  module: sklearn.model_selection
+  params:
+    cv: 3
+    verbose: 1
+model_selection:
+  module_0:
+    class: class_of_model
+    module: module_of_model
+    params:
+      params1: value1
+      params2: value2
+    search_param_grid:
+      param_name:
+      - param_value_1
+      - param_value_2
+  module_1:
+    class: class_of_model
+    module: module_of_model
+    params:
+      params1: value1
+      params2: value2
+    search_param_grid:
+      param_name:
+      - param_value_1
+      - param_value_2

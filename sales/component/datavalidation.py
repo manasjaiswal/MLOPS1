@@ -231,7 +231,8 @@ class DataValidation:
                 report_page_file_path=os.path.join(self.data_validation_config.data_validation_dir,self.data_validation_config.report_page_file_name),
                 null_existence=nan_existence, 
                 outlier_existence=outlier_existence, 
-                data_drift_existence=data_drift_existence
+                data_drift_existence=data_drift_existence,
+                schema_file_path=os.path.join(self.data_validation_config.schema_dir,self.data_validation_config.schema_file_name)
             )
             return data_validation_artifact
         except Exception as e:
