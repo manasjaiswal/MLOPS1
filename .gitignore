@@ -129,7 +129,7 @@ dmypy.json
 .pyre/
 
 
-sales/artifact/
-saved_models/
-notebook.ipynb
-sales_logs/
+.sales/artifact/
+.saved_models/
+.notebook.ipynb
+.sales_logs/
