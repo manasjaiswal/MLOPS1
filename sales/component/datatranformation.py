@@ -120,13 +120,13 @@ class DataTransformation:
             tr1=ColumnTransformer([('feature_handling',FeatureHandling(columns=a),list(range(len(a))))])
             tr2=ColumnTransformer([('feature_generator',FeatureGenerator(columns=a),list(range(len(a))))])
             tr3=ColumnTransformer([('RankEncoder',RankEncoder(columns=a,cat_columns=categorical_columns),list(range(len(a))))])
-            #tr4=ColumnTransformer([('standardscaling',StandardScaler(with_mean=False),list(range(len(a))))])
+            tr4=ColumnTransformer([('standardscaling',StandardScaler(with_mean=False),list(range(len(a))))])
 
             preprocessing=Pipeline(steps=[
                 ('tr1',tr1),
                 ('tr2',tr2),
-                ('tr3',tr3),]
-                #('tr4',tr4)
+                ('tr3',tr3),
+                ('tr4',tr4)]
             )
             return preprocessing
         except Exception as e:

@@ -118,7 +118,7 @@ class ModelEvaluation:
             if metric_info_artifact.index_number==1:
                 model_evaluation_artifact=ModelEvaluationArtifact(is_model_accepted=True,evaluated_model_path=trained_model_file_path)
                 self.update_evaluation_report(model_evaluation_artifact=model_evaluation_artifact) 
-                logging.info(response)
+                logging.info(f"model evaluation artifact:{model_evaluation_artifact}")
             else:
                 model_evaluation_artifact=ModelEvaluationArtifact(is_model_accepted=False,evaluated_model_path=trained_model_file_path)
                 logging.info(f"Trained model is not better than the existing model")
