@@ -1,17 +1,22 @@
-if self.columns is not None:
-                item_visibility_ix=self.columns.index(COLUMN_ITEM_VISIBILITY)
-                item_type_ix=self.columns.index(COLUMN_ITEM_TYPE)
-                item_weight_ix=self.columns.index(COLUMN_ITEM_WEIGHT)
-                outlet_size_ix=self.columns.index(COLUMN_ITEM_WEIGHT)
-            self.item_visibility_ix=item_visibility_ix
-            self.item_type_ix=item_type_ix    
-            self.item_weight_ix=item_weight_ix
-            self.outlet_size_ix=outlet_size_ix
+from sales.config.configuration import Configuration
+from sales.pipeline.pipeline import SalesPipeline
+from sales.exception.exception import SalesException
+import sys
+
+class Demo:
+    def __init__(self):
+        try:
+            self.config=Configuration()
+        except Exception as e:
+            raise SalesException(e,sys) from e
+
+    def demo_run_pipeline(self):
+        try:
+            pipeline=SalesPipeline(config=self.config)
+            pipeline.initiating_sales_pipeline()
+        except Exception as e:
+            raise SalesException(e,sys) from e    
 
 
-
- visibility_arr=X[:,self.item_visibility_ix]
-            item_type_arr=X[:,self.item_type_ix]
-            item_weight_arr=X[:,self.item_weight_ix]
-            outlet_size_arr=X[:,self.outlet_size_ix]
-            data=np.c_(visibility_arr,item_type_arr,item_weight_arr,outlet_size_arr)            
+demo=Demo()
+demo.demo_run_pipeline()            

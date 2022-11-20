@@ -7,7 +7,7 @@ import os,sys
 
 from collections import namedtuple
 from typing import List
-from sales.logger import logging
+from sales.logger.logging import logging
 from sklearn.metrics import r2_score,mean_squared_error
 from sales.constant.constants import *
 from sales.helper_functions.helper import *
@@ -59,7 +59,6 @@ def get_sample_model_config_yaml_file(export_dir:str)->str:
                         "param_name":['param_value_1','param_value_2']
                     }
                 }
-                
             }
         }
         os.makedirs(export_dir,exist_ok=True)
@@ -68,7 +67,7 @@ def get_sample_model_config_yaml_file(export_dir:str)->str:
         return path
     except Exception as e:
         raise SalesException(e,sys) from e
-
+        
 def evaluate_regression_model(model_list:list,X_train:np.ndarray,y_train:np.ndarray,X_test:np.ndarray,y_test:np.ndarray,base_accuracy:float=0.5)->MetricInfoArtifact:
     """
     Description:
@@ -82,9 +81,9 @@ def evaluate_regression_model(model_list:list,X_train:np.ndarray,y_train:np.ndar
             logging.info(f"..........Starting evaluating Model:[{type(model).__name__}]...................")
 
             #Getting prediction on training and testing dataset
-            y_train_pred=model.predict(X_train)
-            y_test_pred=model.predict(X_test)
-
+            y_train_pred=(model.predict(X_train))
+            y_test_pred=(model.predict(X_test))
+    
             #Getting r squared error on training and testing dataset
             train_acc=r2_score(y_train,y_train_pred)
             test_acc=r2_score(y_test,y_test_pred)
@@ -104,7 +103,7 @@ def evaluate_regression_model(model_list:list,X_train:np.ndarray,y_train:np.ndar
             logging.info(f"Train_acc:{train_acc}")
             logging.info(f"Test_acc:{test_acc}")
 
-            if model_accuracy>=base_accuracy and diff_test_train_accuracy<=TOLERANCE_LIMIT:
+            if model_accuracy>=base_accuracy and diff_test_train_accuracy<TOLERANCE_LIMIT:
                 base_accuracy=model_accuracy
                 metric_info_artifact=MetricInfoArtifact(
                     model_name=model_name, 
@@ -117,35 +116,34 @@ def evaluate_regression_model(model_list:list,X_train:np.ndarray,y_train:np.ndar
                     index_number=index_no
                 )
             index_no+=1
-            if metric_info_artifact is None:
-                logging.info(f"No model found with higher accuracy than base model")    
-            else:
-                logging.info(f"Acceptable model found {metric_info_artifact}")
+        if metric_info_artifact is None:
+            logging.info(f"No model found with higher accuracy than base model")    
+        else:
+            logging.info(f"Acceptable model found: {metric_info_artifact}")
 
-            return metric_info_artifact    
+        return metric_info_artifact       
     except Exception as e:
         raise SalesException(e,sys) from e
 class ModelFactory:
     def __init__(self,model_config_path:str=None):
         try:
             self.config:dict=ModelFactory.read_params(model_config_path)
-
             self.grid_search_cv_module:str=self.config[GRID_SEARCH_KEY][MODULE_KEY]
             self.grid_search_class_name:str=self.config[GRID_SEARCH_KEY][CLASS_KEY]
-            self.grid_search_param_mapper:dict=dict(self.config[GRID_SEARCH_KEY[PARAM_KEY]])
+            self.grid_search_param_mapper:dict=dict(self.config[GRID_SEARCH_KEY][PARAM_KEY])
             self.models_initialization_config:dict=dict(self.config[MODEL_SELECTION_KEY])
             self.initialized_model_list=None
             self.grid_searched_best_model_list=None
 
         except Exception as e:
-            raise SalesException(e,sys)
+            raise SalesException(e,sys) from e
 
     @staticmethod
     def read_params(config_path:str)->dict:
         try:
             return read_yaml_file(file_path=config_path)
         except Exception as e:
-            raise SalesException from e
+            raise SalesException(e,sys) from e
 
     @staticmethod
     def class_for_name(module_name:str,class_name:str):
@@ -161,7 +159,7 @@ class ModelFactory:
     def update_property_of_class(instance_ref:object,mapper_data:dict)->object:
         try:
             if not isinstance(mapper_data,dict):
-                raise Exception("param details required")
+                raise Exception("Parameter details Required")
             for key,value in mapper_data.items():
                 logging.info(f"Executing {str(instance_ref)}.{key}={value}")
                 setattr(instance_ref,key,value)
@@ -222,7 +220,7 @@ class ModelFactory:
             self.initialized_model_list=initialized_model_list
             return self.initialized_model_list
         except Exception as e:
-            raise SalesException from e
+            raise SalesException(e,sys) from e
 
     def initiate_best_parameter_search_for_initialized_model(self,initialized_model_detial:InitializedModelDetail,input_feature,output_feature)->GridSearchedBestModel:
         """
@@ -278,9 +276,10 @@ class ModelFactory:
         except Exception as e:
             raise SalesException(e,sys) from e
 
-    def get_best_model(self,X,y,base_accuracy=0.6)->BestModel:
+    def get_best_model(self,X,y,base_accuracy=0.5)->BestModel:
         try:
             initialized_model_list=self.get_initialized_model_list()  
+            print(initialized_model_list)
             logging.info(f"Initialized model list:{initialized_model_list}")
             grid_searched_best_model_list=self.initiate_best_parameter_search_for_initialized_models(initialized_model_list=initialized_model_list,input_feature=X,output_feature=y)          
             logging.info(f"Grid Searched best model list:{grid_searched_best_model_list}")

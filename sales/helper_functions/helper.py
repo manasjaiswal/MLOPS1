@@ -19,7 +19,7 @@ def read_yaml_file(file_path)->dict:
         raise SalesException(e,sys) from e 
 
 
-def write_yaml_file(file_path,json_content:dict):
+def write_yaml_file(file_path,json_content:dict=None):
     """
     This function writes into yaml file
     """
@@ -58,6 +58,7 @@ def save_numpy_array_data(file_path:str,array:np.array):
     Saving numpy array data into .npz file
     """
     try:
+        array=array.astype('float64')
         dir_path=os.path.dirname(file_path)
         os.makedirs(dir_path,exist_ok=True)
         with open(file_path,"wb") as numpy_file:
@@ -65,7 +66,7 @@ def save_numpy_array_data(file_path:str,array:np.array):
     except Exception as e:
         raise SalesException(e,sys)
 
-def load_numpy_array_data(file_path)->np.array:
+def load_numpy_array_data(file_path)->np.ndarray:
     """
     Loading numpy array data
     """        

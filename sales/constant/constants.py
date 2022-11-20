@@ -98,3 +98,8 @@ MODEL_SELECTION_KEY="model_selection"
 SEARCH_PARA_GRID_KEY="search_param_grid"
 
 TOLERANCE_LIMIT=0.08
+
+#Model evaluation related constants
+BEST_MODEL_KEY="best model"
+HISTORY_KEY="history"
+MODEL_PATH_KEY="model_path"

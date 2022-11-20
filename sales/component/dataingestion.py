@@ -52,7 +52,7 @@ class DataIngestion:
                 strat_test_set=sales_df.loc[test_index].drop(["MRP_category"],axis=1)
 
             ingested_train_file_path=os.path.join(self.dataingestionconfig.ingested_train_dir,self.dataingestionconfig.train_file_name)
-            ingested_test_file_path=os.path.join(self.dataingestionconfig.ingested_train_dir,self.dataingestionconfig.test_file_name)
+            ingested_test_file_path=os.path.join(self.dataingestionconfig.ingested_test_dir,self.dataingestionconfig.test_file_name)
 
             if strat_train_set is not None:
                 os.makedirs(self.dataingestionconfig.ingested_train_dir,exist_ok=True)
@@ -62,7 +62,7 @@ class DataIngestion:
             if strat_test_set is not None:
                 os.makedirs(self.dataingestionconfig.ingested_test_dir,exist_ok=True)
                 logging.info(f"Copying splitted train data into file:{ingested_test_file_path}")
-                strat_train_set.to_csv(ingested_test_file_path,index=False)
+                strat_test_set.to_csv(ingested_test_file_path,index=False)
 
             data_ingestion_artifact=DataIngestionArtifact(
                 train_file_path=ingested_train_file_path, 
