@@ -29,7 +29,7 @@ class SalesPipeline(Thread):
     def __init__(self,config:Configuration):
         try:
             os.makedirs(config.training_pipeline_config.artifact_dir,exist_ok=True)
-            SalesPipeline.experiment_file_path=os.path.join(config.training_pipeline_config.artifact_dir,"EXPERIMENT_DIR_NAME","EXPERIMENT_FILE_NAME")
+            SalesPipeline.experiment_file_path=os.path.join(config.training_pipeline_config.artifact_dir,EXPERIMENT_DIR_NAME,EXPERIMENT_FILE_NAME)
             super().__init__(daemon=False,name="sales_pieline")
             self.config=config
         except Exception as e:
