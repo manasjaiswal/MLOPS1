@@ -13,7 +13,7 @@ class Demo:
     def demo_run_pipeline(self):
         try:
             pipeline=SalesPipeline(config=self.config)
-            pipeline.initiating_sales_pipeline()
+            pipeline.run()
         except Exception as e:
             raise SalesException(e,sys) from e    
 

@@ -103,3 +103,6 @@ TOLERANCE_LIMIT=0.08
 BEST_MODEL_KEY="best model"
 HISTORY_KEY="history"
 MODEL_PATH_KEY="model_path"
+
+EXPERIMENT_DIR_NAME="experiment"
+EXPERIMENT_FILE_NAME="experiment.csv"
