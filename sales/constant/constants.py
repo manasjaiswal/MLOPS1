@@ -87,6 +87,7 @@ COLUMN_FAT_CONTENT="Item_Fat_Content"
 COLUMN_OUTLET_LOCATION_TYPE="Outlet_Location_Type"
 COLUMN_OUTLET_IDENTIFIER_KEY="Outlet_Identifier"
 COLUMN_ITEM_MRP="Item_MRP"
+COLUMN_OUTLET_TYPE="Outlet_Type"
 
 
 #ModelTraining related constants
