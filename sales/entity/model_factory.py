@@ -70,22 +70,63 @@ def get_sample_model_config_yaml_file(export_dir:str)->str:
     except Exception as e:
         raise SalesException(e,sys) from e
 
-def evaluate_classification_model(model_list:list,X_train:np.ndarray,y_train:np.ndarray,X_test:np.ndarray,y_test:np.ndarray,base_accuracy:float=0.5)->MetricInfoArtifact2:
+def evaluate_classification_model(model_list:List[object],X_train:np.ndarray,y_train:np.ndarray,X_test:np.ndarray,y_test:np.ndarray,base_accuracy:float=0.5)->MetricInfoArtifact2:
     """
     This function compares multiple classification models and returns the best model
     """
     try:
-        metric_info_artifact=MetricInfoArtifact(
-            model_name, 
-            model_object, 
-            train_fbeta, 
-            test_fbeta,
+        ix_no=0
+        metric_info_artifact=None
+        for model in model_list:
+            model_name=str(model) #getting model name based on object
+            logging.info(f"..........Starting evaluating Model:[{type(model).__name__}]...................")
+            y_train_pred=model.predict()
+            y_test_pred=model.predict()
 
-            train_accuracy, 
-            test_accuracy, 
-            model_accuracy, 
-            index_number
-        )
+            confusion_matrix_train=confusion_matrix(y_true=y_train,y_pred=y_train_pred)
+            confusion_matrix_test=confusion_matrix(y_true=y_test,y_pred=y_test_pred)
+            #For multiclassification we want to know about the classes 
+            classes=len(confusion_matrix_test[0])
+            a_train=0
+            a_test=0
+            b_train=0
+            b_test=0
+            for i in range(classes):
+                for j in range(classes):
+                    if i==j:
+                        a_train+=confusion_matrix_train[i][j]
+                        a_test+=confusion_matrix_test[i][j]
+                    b_train+=a[i][j]
+                    b_test+=a[i][j]
+            train_accuracy=(a_train)/(b_train)
+            test_accuracy=(a_test)/(b_test)
+            model_accuracy=(2*train_accuracy*test_accuracy)/(train_accuracy+test_accuracy)  
+            diff_test_train_acc=abs(train_accuracy-test_accuracy)
+            f_beta_train=fbeta_score(y_true=y_train,y_pred=y_train_pred)
+            f_beta_test=fbeta_score(y_true=y_test,y_pred=y_test_pred)
+            model_fbeta=(2*f_beta_train*f_beta_test)/(f_beta_train+f_beta_test)
+            logging.info(f"Currently evaluation model {model_name}")
+            logging.info(f"F beta score:{model_fbeta}")
+            logging.info(f"Model accuracy:{model_accuracy}")
+            logging.info(f"Train confusion matrix:{confusion_matrix_train}")
+            logging.info(f"Test confusion matrix:{confusion_matrix_test}")
+            if base_accuracy<=model_accuracy and diff_test_train_acc<TOLERANCE_LIMIT:        
+                metric_info_artifact=MetricInfoArtifact2(
+                model_name=model_name, 
+                model_object=model, 
+                train_fbeta=f_beta_train, 
+                test_fbeta=f_beta_test, 
+                model_fbeta=model_fbeta, 
+                train_accuracy=train_accuracy, 
+                test_accuracy=test_accuracy, 
+                model_accuracy=model_accuracy, 
+                index_number=ix_no 
+                )
+            ix_no+=1
+        if metric_info_artifact is None:
+            logging.info(f"No model is better than base model")
+        else:
+            logging.info(f"Acceptable model found:{metric_info_artifact}")            
         return metric_info_artifact
     except Exception as e:
         raise SalesException(e,sys) from e
@@ -142,7 +183,6 @@ def evaluate_regression_model(model_list:list,X_train:np.ndarray,y_train:np.ndar
             logging.info(f"No model found with higher accuracy than base model")    
         else:
             logging.info(f"Acceptable model found: {metric_info_artifact}")
-
         return metric_info_artifact       
     except Exception as e:
         raise SalesException(e,sys) from e

@@ -185,7 +185,7 @@ def update_model_config():
         return str(e)
 
 
-@app.route(f'/logs', defaults={'req_path': f'{LOG_FOLDER_NAME}'})
+@app.route(f'/sales_logs', defaults={'req_path': f'{LOG_FOLDER_NAME}'})
 @app.route(f'/{LOG_FOLDER_NAME}/<path:req_path>')
 def render_log_dir(req_path):
     os.makedirs(LOG_FOLDER_NAME, exist_ok=True)
