@@ -1,0 +1,5 @@
+best model:
+  model_path: C:\Users\H p\MLops\sales\artifact\modeltraining\2022-11-21-20-05-32\trained_model\model.pkl
+history:
+  2022-11-21-20-05-32:
+    model_path: C:\Users\H p\MLops\sales\artifact\modeltraining\2022-11-21-20-05-32\trained_model\model.pkl

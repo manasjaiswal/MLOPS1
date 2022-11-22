@@ -8,7 +8,7 @@ import os,sys
 from collections import namedtuple
 from typing import List
 from sales.logger.logging import logging
-from sklearn.metrics import r2_score,mean_squared_error
+from sklearn.metrics import r2_score,mean_squared_error,confusion_matrix,fbeta_score,roc_auc_score
 from sales.constant.constants import *
 from sales.helper_functions.helper import *
 
@@ -24,6 +24,8 @@ BestModel=namedtuple("BestModel",
 MetricInfoArtifact=namedtuple("MetricInfoArtifact",
                             ["model_name","model_object","train_rmse","test_rmse","train_accuracy","test_accuracy","model_accuracy","index_number"])
 
+MetricInfoArtifact2=namedtuple("MetricInfoArtifact2",
+                            ["model_name","model_object","train_fbeta","test_fbeta","model_fbeta","train_accuracy","test_accuracy","model_accuracy","index_number"])
 
 def get_sample_model_config_yaml_file(export_dir:str)->str:
     try:
@@ -67,7 +69,27 @@ def get_sample_model_config_yaml_file(export_dir:str)->str:
         return path
     except Exception as e:
         raise SalesException(e,sys) from e
-        
+
+def evaluate_classification_model(model_list:list,X_train:np.ndarray,y_train:np.ndarray,X_test:np.ndarray,y_test:np.ndarray,base_accuracy:float=0.5)->MetricInfoArtifact2:
+    """
+    This function compares multiple classification models and returns the best model
+    """
+    try:
+        metric_info_artifact=MetricInfoArtifact(
+            model_name, 
+            model_object, 
+            train_fbeta, 
+            test_fbeta,
+
+            train_accuracy, 
+            test_accuracy, 
+            model_accuracy, 
+            index_number
+        )
+        return metric_info_artifact
+    except Exception as e:
+        raise SalesException(e,sys) from e
+
 def evaluate_regression_model(model_list:list,X_train:np.ndarray,y_train:np.ndarray,X_test:np.ndarray,y_test:np.ndarray,base_accuracy:float=0.5)->MetricInfoArtifact:
     """
     Description:

@@ -83,7 +83,7 @@ def view_experiment_history():
 @app.route('/train', methods=['GET', 'POST'])
 def train():
     message = ""
-    pipeline = SalesPipeline(config=Configuration())
+    pipeline = SalesPipeline(config=Configuration(current_time_stamp=get_current_time_stamp()))
     if not SalesPipeline.experiment.running_status:
         message = "Training started."
         pipeline.start()
